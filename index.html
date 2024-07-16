@@ -18,22 +18,21 @@
         }
 
         #game-container {
-    position: relative;
-    width: 500px;
-    height: 500px;
-    background-color: rgba(248, 245, 245, 0.7);
-    border: 2px solid #18fa04;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: border-color 0.3s ease; /* Smooth transition for border color change */
-}
+            position: relative;
+            width: 500px;
+            height: 500px;
+            background-color: rgba(248, 245, 245, 0.7);
+            border: 2px solid #18fa04;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: border-color 0.3s ease;
+        }
 
-.border-glow {
-    border-color: #07e777; /* Color of the glowing effect */
-    box-shadow: 0 0 20px 5px #04fa39; /* Example of a glowing effect using box-shadow */
-    transition: box-shadow 0.3s ease; /* Smooth transition for the glowing effect */
-}
-
+        .border-glow {
+            border-color: #07e777;
+            box-shadow: 0 0 20px 5px #04fa39;
+            transition: box-shadow 0.3s ease;
+        }
 
         #bar {
             position: absolute;
@@ -59,7 +58,7 @@
             box-shadow: 0 0 10px 2px yellow;
         }
 
-         #score {
+        #score {
             position: absolute;
             top: 10px;
             right: 10px;
@@ -98,7 +97,6 @@
 
         .controls button {
             background-color: #2bcc46;
-            
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -120,166 +118,167 @@
         <div id="score">Score: 0</div>
         <div id="gover">GAME OVER</div>
     </div>
-    <div id="start-message">Press Enter to Start</div>
+    <div id="start-message">Press 'S' to Start</div>
     <div class="controls">
         <button id="reset-btn">Reset</button>
     </div>
 
     <script>
         let score = 0;
-let isGameStarted = false;
-let isGameOver = false; // Add this flag
-let interval;
-let isGamePaused = false;
-let hitCount = 0;
+        let isGameStarted = false;
+        let isGameOver = false;
+        let interval;
+        let isGamePaused = false;
+        let hitCount = 0;
 
-const bar = document.getElementById('bar');
-const gamecon = document.getElementById('game-container');
-const ball = document.getElementById('ball');
-const scoreDisplay = document.getElementById('score');
-const goverDisplay = document.getElementById('gover');
-const startMessage = document.getElementById('start-message');
-const resetBtn = document.getElementById('reset-btn');
+        const bar = document.getElementById('bar');
+        const gamecon = document.getElementById('game-container');
+        const ball = document.getElementById('ball');
+        const scoreDisplay = document.getElementById('score');
+        const goverDisplay = document.getElementById('gover');
+        const startMessage = document.getElementById('start-message');
+        const resetBtn = document.getElementById('reset-btn');
 
-let x, y, dx = 2, dy = 2;
+        let x, y, dx = 2, dy = 2;
 
-function moveBarLeft() {
-    if (isGameStarted && !isGameOver) { // Check if the game is not over
-        const newX = bar.offsetLeft - (bar.offsetWidth / 2);
-        bar.style.left = Math.max(50, newX) + 'px';
-    }
-}
-
-function moveBarRight() {
-    if (isGameStarted && !isGameOver) { // Check if the game is not over
-        const newX = bar.offsetLeft + (bar.offsetWidth / 2);
-        const containerWidth = document.getElementById('game-container').offsetWidth;
-        bar.style.left = Math.min(containerWidth - bar.offsetWidth + 46, newX) + 'px';
-    }
-}
-
-function handleKeyDown(event) {
-    if (!isGameStarted && !isGameOver) { // Only start or reset the game if it's not over
-        if (event.key === 'Enter') {
-            startGame();
-        }
-    } else if (isGameStarted && !isGameOver) {
-        if (event.key === 'ArrowLeft') {
-            moveBarLeft();
-        } else if (event.key === 'ArrowRight') {
-            moveBarRight();
-        } else if (event.key === ' ') {
-            pauseGame();
-        }
-    } else if (isGameOver && event.key === 'Enter') {
-        resetGame();
-    }
-}
-
-function startGame() {
-    if (!isGameStarted && !isGameOver) { // Only start if the game is not over
-        isGameStarted = true;
-        startMessage.style.display = 'none';
-        setRandomBallPosition();
-        startBall();
-    }
-}
-
-function stopGame() {
-    isGameStarted = false;
-    isGameOver = true; // Set game over flag to true
-}
-
-function moveBall() {
-    const containerHeight = document.getElementById('game-container').offsetHeight;
-    const containerWidth = document.getElementById('game-container').offsetWidth;
-
-    x += dx;
-    y += dy;
-
-    if (x <= 0 || x >= containerWidth - ball.offsetWidth) {
-        gamecon.classList.add('border-glow');
-        setTimeout(() => gamecon.classList.remove('border-glow'), 100);
-        dx = -dx;
-    }
-
-    if (y <= 0) {
-        gamecon.classList.add('border-glow');
-        setTimeout(() => gamecon.classList.remove('border-glow'), 100);
-        dy = -dy;
-    } else if (y + ball.offsetHeight >= bar.offsetTop && y <= bar.offsetTop + bar.offsetHeight) {
-        if (x + ball.offsetWidth >= bar.offsetLeft - (bar.offsetWidth / 2) && x <= bar.offsetLeft + bar.offsetWidth - (bar.offsetWidth / 2)) {
-            dy = -dy;
-            score += 10;
-            scoreDisplay.textContent = 'Score: ' + score;
-            hitCount++;
-
-            ball.classList.add('glow');
-            setTimeout(() => ball.classList.remove('glow'), 100);
-
-            if (hitCount % 5 === 0) {
-                dx += (dx > 0) ? 1 : -1;
-                dy += (dy > 0) ? 1 : -1;
+        function moveBarLeft() {
+            if (isGameStarted && !isGameOver) {
+                const newX = bar.offsetLeft - (bar.offsetWidth / 2);
+                bar.style.left = Math.max(50, newX) + 'px';
             }
-        } else {
-            goverDisplay.style.display = 'block';
-            clearInterval(interval);
-            stopGame();
         }
-    }
 
-    ball.style.left = x + 'px';
-    ball.style.top = y + 'px';
-}
+        function moveBarRight() {
+            if (isGameStarted && !isGameOver) {
+                const newX = bar.offsetLeft + (bar.offsetWidth / 2);
+                const containerWidth = document.getElementById('game-container').offsetWidth;
+                bar.style.left = Math.min(containerWidth - bar.offsetWidth + 46, newX) + 'px';
+            }
+        }
 
-function startBall() {
-    interval = setInterval(moveBall, 10);
-}
+        function handleKeyDown(event) {
+            if (!isGameStarted && !isGameOver) {
+                if (event.key.toLowerCase() === 's') {
+                    startGame();
+                }
+            } else if (isGameStarted && !isGameOver) {
+                if (event.key === 'ArrowLeft') {
+                    moveBarLeft();
+                } else if (event.key === 'ArrowRight') {
+                    moveBarRight();
+                } else if (event.key === ' ') {
+                    pauseGame();
+                }
+            } else if (isGameOver && event.key.toLowerCase() === 's') {
+                resetGame();
+            }
+        }
 
-function pauseGame() {
-    if (isGameStarted && !isGameOver) { // Only pause if the game is not over
-        if (!isGamePaused) {
-            clearInterval(interval);
-            isGamePaused = true;
-        } else {
+        function startGame() {
+            if (!isGameStarted && !isGameOver) {
+                isGameStarted = true;
+                startMessage.style.display = 'none';
+                setRandomBallPosition();
+                startBall();
+            }
+        }
+
+        function stopGame() {
+            isGameStarted = false;
+            isGameOver = true;
+        }
+
+        function moveBall() {
+            const containerHeight = document.getElementById('game-container').offsetHeight;
+            const containerWidth = document.getElementById('game-container').offsetWidth;
+
+            x += dx;
+            y += dy;
+
+            if (x <= 0 || x >= containerWidth - ball.offsetWidth) {
+                gamecon.classList.add('border-glow');
+                setTimeout(() => gamecon.classList.remove('border-glow'), 100);
+                dx = -dx;
+            }
+
+            if (y <= 0) {
+                gamecon.classList.add('border-glow');
+                setTimeout(() => gamecon.classList.remove('border-glow'), 100);
+                dy = -dy;
+            } else if (y + ball.offsetHeight >= bar.offsetTop && y <= bar.offsetTop + bar.offsetHeight) {
+                if (x + ball.offsetWidth >= bar.offsetLeft - (bar.offsetWidth / 2) && x <= bar.offsetLeft + bar.offsetWidth - (bar.offsetWidth / 2)) {
+                    dy = -dy;
+                    score += 10;
+                    scoreDisplay.textContent = 'Score: ' + score;
+                    hitCount++;
+
+                    ball.classList.add('glow');
+                    setTimeout(() => ball.classList.remove('glow'), 100);
+
+                    if (hitCount % 5 === 0) {
+                        dx += (dx > 0) ? 1 : -1;
+                        dy += (dy > 0) ? 1 : -1;
+                    }
+                } else {
+                    goverDisplay.style.display = 'block';
+                    clearInterval(interval);
+                    stopGame();
+                }
+            }
+
+            ball.style.left = x + 'px';
+            ball.style.top = y + 'px';
+        }
+
+        function startBall() {
             interval = setInterval(moveBall, 10);
-            isGamePaused = false;
         }
-    }
-}
 
-function setRandomBallPosition() {
-    const containerWidth = document.getElementById('game-container').offsetWidth;
-    const randomLeft = Math.random() * (containerWidth - ball.offsetWidth);
-    const randomTop = Math.random() * 50; 
-    ball.style.top = randomTop + 'px';
-    ball.style.left = randomLeft + 'px';
-    x = randomLeft;
-    y = randomTop;
-}
+        function pauseGame() {
+            if (isGameStarted && !isGameOver) {
+                if (!isGamePaused) {
+                    clearInterval(interval);
+                    isGamePaused = true;
+                } else {
+                    interval = setInterval(moveBall, 10);
+                    isGamePaused = false;
+                }
+            }
+        }
 
-function resetGame() {
-    clearInterval(interval);
-    isGameStarted = false;
-    isGameOver = false; // Reset game over flag
-    isGamePaused = false;
-    score = 0;
-    hitCount = 0;
-    scoreDisplay.textContent = 'Score: ' + score;
+        function setRandomBallPosition() {
+            const containerWidth = document.getElementById('game-container').offsetWidth;
+            const randomLeft = Math.random() * (containerWidth - ball.offsetWidth);
+            const randomTop = Math.random() * 50; 
+            ball.style.top = randomTop + 'px';
+            ball.style.left = randomLeft + 'px';
+            x = randomLeft;
+            y = randomTop;
+        }
 
-    setRandomBallPosition();
-    bar.style.left = 'calc(50% - 1px)';
-    goverDisplay.style.display = 'none'; 
-    dx = 2;
-    dy = 2;
-    startMessage.style.display = 'block';
-}
+        function resetGame() {
+            clearInterval(interval);
+            isGameStarted = false;
+            isGameOver = false;
+            isGamePaused = false;
+            score = 0;
+            hitCount = 0;
+            scoreDisplay.textContent = 'Score: ' + score;
 
-document.addEventListener('keydown', handleKeyDown);
-resetBtn.addEventListener('click', resetGame);
+            setRandomBallPosition();
+            bar.style.left = 'calc(50% - 1px)';
+            goverDisplay.style.display = 'none'; 
+            dx = 2;
+            dy = 2;
+            startMessage.style.display = 'block';
+        }
 
-setRandomBallPosition();
-startMessage.style.display = 'block';
-</script>
+        document.addEventListener('keydown', handleKeyDown);
+        resetBtn.addEventListener('click', resetGame);
+
+        setRandomBallPosition();
+        startMessage.style.display = 'block';
+    </script>
 </body>
 </html>
+
