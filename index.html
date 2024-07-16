@@ -25,13 +25,13 @@
     border: 2px solid #18fa04;
     border-radius: 10px;
     overflow: hidden;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease; /* Smooth transition for border color change */
 }
 
 .border-glow {
-    border-color: #07e777; 
-    box-shadow: 0 0 20px 5px #04fa39; 
-    transition: box-shadow 0.3s ease; 
+    border-color: #07e777; /* Color of the glowing effect */
+    box-shadow: 0 0 20px 5px #04fa39; /* Example of a glowing effect using box-shadow */
+    transition: box-shadow 0.3s ease; /* Smooth transition for the glowing effect */
 }
 
 
@@ -128,7 +128,7 @@
     <script>
         let score = 0;
 let isGameStarted = false;
-let isGameOver = false; 
+let isGameOver = false; // Add this flag
 let interval;
 let isGamePaused = false;
 let hitCount = 0;
@@ -144,14 +144,14 @@ const resetBtn = document.getElementById('reset-btn');
 let x, y, dx = 2, dy = 2;
 
 function moveBarLeft() {
-    if (isGameStarted && !isGameOver) {
+    if (isGameStarted && !isGameOver) { // Check if the game is not over
         const newX = bar.offsetLeft - (bar.offsetWidth / 2);
         bar.style.left = Math.max(50, newX) + 'px';
     }
 }
 
 function moveBarRight() {
-    if (isGameStarted && !isGameOver) { 
+    if (isGameStarted && !isGameOver) { // Check if the game is not over
         const newX = bar.offsetLeft + (bar.offsetWidth / 2);
         const containerWidth = document.getElementById('game-container').offsetWidth;
         bar.style.left = Math.min(containerWidth - bar.offsetWidth + 46, newX) + 'px';
@@ -159,7 +159,7 @@ function moveBarRight() {
 }
 
 function handleKeyDown(event) {
-    if (!isGameStarted && !isGameOver) { r
+    if (!isGameStarted && !isGameOver) { // Only start or reset the game if it's not over
         if (event.key === 'Enter') {
             startGame();
         }
@@ -177,7 +177,7 @@ function handleKeyDown(event) {
 }
 
 function startGame() {
-    if (!isGameStarted && !isGameOver) { 
+    if (!isGameStarted && !isGameOver) { // Only start if the game is not over
         isGameStarted = true;
         startMessage.style.display = 'none';
         setRandomBallPosition();
@@ -187,7 +187,7 @@ function startGame() {
 
 function stopGame() {
     isGameStarted = false;
-    isGameOver = true; 
+    isGameOver = true; // Set game over flag to true
 }
 
 function moveBall() {
@@ -237,7 +237,7 @@ function startBall() {
 }
 
 function pauseGame() {
-    if (isGameStarted && !isGameOver) { 
+    if (isGameStarted && !isGameOver) { // Only pause if the game is not over
         if (!isGamePaused) {
             clearInterval(interval);
             isGamePaused = true;
@@ -261,7 +261,7 @@ function setRandomBallPosition() {
 function resetGame() {
     clearInterval(interval);
     isGameStarted = false;
-    isGameOver = false; 
+    isGameOver = false; // Reset game over flag
     isGamePaused = false;
     score = 0;
     hitCount = 0;
